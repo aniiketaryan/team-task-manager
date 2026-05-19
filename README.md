@@ -1,135 +1,71 @@
-# 🗂️ Team Task Manager
+# Team Task Manager
 
-A full-stack collaborative task management application built with React and Node.js — designed to help teams organize projects, assign tasks, and track progress in real time.
+A full-stack collaborative task management web application built with React and Node.js.
 
-## 🚀 Live Demo
-> Coming soon / [Add your deployed link here]
+## Live Demo
+- Frontend: https://task-manager-frontend-fni2.onrender.com
+- Backend: https://team-task-manager-42lf.onrender.com
 
----
+## Tech Stack
+- **Frontend:** React, Vite, React Router, Axios
+- **Backend:** Node.js, Express
+- **Database:** SQLite3
+- **Auth:** JWT + bcryptjs
+- **Deployment:** Render
 
-## ✨ Features
+## Features
+- User signup and login with JWT authentication
+- Create projects (creator becomes Admin)
+- Admin can add/remove members
+- Create, edit, delete tasks (Admin only)
+- Assign tasks to members
+- Update task status: To Do, In Progress, Done
+- Dashboard with total tasks, status breakdown, overdue tasks
+- Role-based access (Admin vs Member)
 
-- 🔐 **JWT Authentication** — Secure login and protected routes via middleware
-- 📋 **Project Management** — Create and manage multiple projects with ease
-- ✅ **Task Tracking** — Assign tasks, set statuses, and monitor progress
-- 📊 **Dashboard Analytics** — View total tasks, breakdown by status, by user, and overdue items
-- 👥 **Multi-user Support** — Team-based task assignment and collaboration
-- 🗄️ **SQLite Database** — Lightweight, file-based database for fast local development
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-- React.js (Vite)
-- JavaScript (ES6+)
-- CSS3
+## Local Setup
 
 ### Backend
-- Node.js
-- Express.js
-- JWT (JSON Web Tokens)
-- SQLite (via better-sqlite3 / database.sqlite)
-
----
-
-## 📁 Project Structure
-
-```
-team-task-manager/
-├── backend/
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── db/
-│   │   ├── middleware/
-│   │   │   └── auth.js
-│   │   ├── routes/
-│   │   │   ├── auth.js
-│   │   │   ├── dashboard.js
-│   │   │   ├── projects.js
-│   │   │   └── tasks.js
-│   │   └── index.js
-│   ├── database.sqlite
-│   └── package.json
-├── frontend/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── App.jsx
-│   │   ├── App.css
-│   │   ├── main.jsx
-│   │   └── index.css
-│   ├── public/
-│   └── package.json
-└── README.md
-```
-
----
-
-## ⚙️ Getting Started
-
-### Prerequisites
-- Node.js v18+
-- npm
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/siddhidokania/team-task-manager.git
-cd team-task-manager
-```
-
-### 2. Setup Backend
 ```bash
 cd backend
 npm install
+```
+Create `backend/.env`:
+```
+PORT=5000
+JWT_SECRET=yoursecretkey
+FRONTEND_URL=http://localhost:5173
+```
+```bash
 node src/index.js
 ```
-Backend runs on `http://localhost:5000`
 
-### 3. Setup Frontend
+### Frontend
 ```bash
 cd frontend
 npm install
+```
+Create `frontend/.env`:
+```
+VITE_API_URL=http://localhost:5000/api
+```
+```bash
 npm run dev
 ```
-Frontend runs on `http://localhost:5173`
 
----
+## API Endpoints
+- POST /api/auth/signup
+- POST /api/auth/login
+- GET /api/projects
+- POST /api/projects
+- GET /api/projects/:id
+- POST /api/projects/:id/members
+- GET /api/tasks/project/:projectId
+- POST /api/tasks
+- PATCH /api/tasks/:id/status
+- GET /api/dashboard/:projectId
 
-## 🔑 Environment Variables
-
-Create a `.env` file inside `/backend`:
-
-```env
-JWT_SECRET=your_jwt_secret_key
-PORT=5000
-```
-
----
-
-## 📌 API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register a new user |
-| POST | `/api/auth/login` | Login and get JWT token |
-| GET | `/api/projects` | Get all projects |
-| POST | `/api/projects` | Create a new project |
-| GET | `/api/tasks` | Get all tasks |
-| POST | `/api/tasks` | Create a new task |
-| GET | `/api/dashboard/:projectId` | Get dashboard stats |
-
----
-
-## 👩‍💻 Author
-
-**Siddhi Dokania**
-- Portfolio: [siddhi-portfolio-green.vercel.app](https://siddhi-portfolio-green.vercel.app)
-- GitHub: [@siddhidokania](https://github.com/siddhidokania)
-- LinkedIn: [linkedin.com/in/siddhi-dokania](https://linkedin.com/in/siddhi-dokania)
-- Email: siddhidokania@gmail.com
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
+## Deployment
+Deployed on Render:
+- Backend: Node web service with build command `npm install && npm rebuild sqlite3`
+- Frontend: Static site with rewrite rule `/* -> /index.html`
