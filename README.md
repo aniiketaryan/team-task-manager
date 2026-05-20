@@ -1,121 +1,218 @@
-# Nexus — Team Task Manager
+<div align="center">
 
-A simplified Trello/Asana-style web application where teams can create projects, assign tasks, and track progress with role-based access control.
+# ❋ Nexus
 
-🔗 **Live Demo**
-- Frontend: https://team-task-frontend-3o3s.onrender.com
-- Backend API: https://team-task-manager-l9ru.onrender.com
+### Team Task Manager — Built for teams who care about clarity.
 
----
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Frontend-4a7c59?style=for-the-badge)](https://team-task-frontend-3o3s.onrender.com)
+[![API](https://img.shields.io/badge/⚡_API-Backend-2c5f3f?style=for-the-badge)](https://team-task-manager-l9ru.onrender.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/siddhidokania/team-task-manager)
 
-## Features
+<br/>
 
-- **User Authentication** — Signup/Login with JWT-based sessions
-- **Project Management** — Create projects, invite members, manage your team
-- **Role-Based Access** — Admins manage everything; Members update only their assigned tasks
-- **Task Management** — Kanban board with To Do / In Progress / Done columns
-- **Dashboard** — Task stats, workload per member, overdue task tracking
-- **Member Management** — Add/remove members per project with role badges
+> A simplified yet powerful Trello/Asana-style project management tool.  
+> Create projects, assign tasks, track progress — all with role-based access control.
 
----
+<br/>
 
-## Tech Stack
+![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=black)
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React + Vite, React Router v6, Axios |
-| Backend | Node.js + Express |
-| Database | SQLite3 |
-| Auth | JWT + bcryptjs |
-| Deployment | Render (Static Site + Web Service) |
+</div>
 
 ---
 
-## Project Structure
+## ✨ What is Nexus?
+
+Nexus is a full-stack team collaboration tool where users can organize work into **projects**, break them down into **tasks**, and collaborate with their team — all while respecting **role-based permissions**.
+
+Think of it as a lightweight version of Asana or Trello — minus the bloat.
+
+---
+
+## 🖥️ Screenshots
+
+| Projects Dashboard | Kanban Board | Team Dashboard |
+|:-:|:-:|:-:|
+| View all your projects with role badges | Drag tasks across To Do / In Progress / Done | Stats, workload, and overdue tracking |
+
+---
+
+## 🚀 Features
+
+### 🔐 Authentication
+- Secure signup & login with **JWT tokens**
+- Persistent sessions via token stored in localStorage
+- Protected routes — unauthenticated users redirected to login
+
+### 📁 Project Management
+- Create unlimited projects with name & description
+- **Project creator automatically becomes Admin**
+- Admin can add members by email or remove them anytime
+- Each user sees only their own projects
+
+### ✅ Task Management
+- Full task creation: **Title, Description, Due Date, Priority**
+- Assign tasks to specific team members
+- Visual **Kanban board** — To Do / In Progress / Done
+- Edit and delete tasks (Admin only)
+
+### 📊 Dashboard
+- Total task count at a glance
+- Tasks broken down **by status**
+- **Workload per member** with visual progress bars
+- **Overdue task alerts** highlighted in red
+
+### 🛡️ Role-Based Access Control
+
+| Permission | Admin | Member |
+|:-----------|:-----:|:------:|
+| Create / Edit / Delete tasks | ✅ | ❌ |
+| Add / Remove team members | ✅ | ❌ |
+| Update status of assigned tasks | ✅ | ✅ |
+| View all project tasks | ✅ | ✅ |
+| View dashboard & members | ✅ | ✅ |
+
+> Roles are **project-scoped** — the same user can be Admin in one project and Member in another. This mirrors how real-world tools like Trello and Asana work.
+
+---
+
+## 🏗️ Tech Stack
+
+| Layer | Technology | Purpose |
+|:------|:-----------|:--------|
+| **Frontend** | React 18 + Vite | UI framework & build tool |
+| **Routing** | React Router v6 | Client-side navigation |
+| **HTTP Client** | Axios | API calls with JWT interceptor |
+| **Backend** | Node.js + Express | REST API server |
+| **Database** | SQLite3 | Lightweight persistent storage |
+| **Auth** | JWT + bcryptjs | Secure token-based authentication |
+| **Deployment** | Render | Cloud hosting (frontend + backend) |
+
+---
+
+## 📁 Project Structure
 
 ```
-team-task-manager/
-├── backend/
-│   ├── src/
-│   │   ├── db/index.js          # SQLite setup & helper methods
-│   │   ├── middleware/auth.js   # JWT middleware
-│   │   └── routes/
-│   │       ├── auth.js          # Signup, Login, Me
-│   │       ├── projects.js      # Project CRUD + members
-│   │       ├── tasks.js         # Task CRUD + status update
-│   │       └── dashboard.js     # Stats endpoint
-│   ├── src/index.js             # Express app entry point
-│   └── package.json
-├── frontend/
-│   ├── src/
-│   │   ├── api/axios.js         # Axios instance with JWT interceptor
-│   │   ├── context/AuthContext.jsx
-│   │   └── pages/
-│   │       ├── Login.jsx
-│   │       ├── Signup.jsx
-│   │       ├── Projects.jsx
-│   │       └── ProjectDetail.jsx
-│   ├── App.jsx
-│   ├── index.css
-│   └── vite.config.js
-└── README.md
+nexus/
+├── 📂 backend/
+│   └── src/
+│       ├── db/index.js          # SQLite setup & query helpers
+│       ├── middleware/auth.js   # JWT verification middleware
+│       └── routes/
+│           ├── auth.js          # POST /signup, /login, GET /me
+│           ├── projects.js      # Project CRUD + member management
+│           ├── tasks.js         # Task CRUD + status updates
+│           └── dashboard.js     # Aggregated stats endpoint
+│
+└── 📂 frontend/
+    └── src/
+        ├── api/axios.js         # Configured Axios instance
+        ├── context/
+        │   └── AuthContext.jsx  # Global auth state
+        └── pages/
+            ├── Login.jsx        # Sign in page
+            ├── Signup.jsx       # Create account page
+            ├── Projects.jsx     # Projects listing page
+            └── ProjectDetail.jsx # Kanban + Dashboard + Members
 ```
 
 ---
 
-## Database Schema
+## 🗄️ Database Schema
 
 ```sql
-users          (id, name, email, password, created_at)
-projects       (id, name, description, created_by, created_at)
-project_members(id, project_id, user_id, role)
-tasks          (id, title, description, due_date, priority, status, project_id, assigned_to, created_by, created_at)
-```
+-- Users
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,       -- bcrypt hashed
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
-> **Note:** SQLite data resets on every Render redeploy (ephemeral filesystem). Re-signup after each deploy.
+-- Projects
+CREATE TABLE projects (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  description TEXT,
+  created_by INTEGER,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Project Members (with roles)
+CREATE TABLE project_members (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  project_id INTEGER,
+  user_id INTEGER,
+  role TEXT DEFAULT 'member',   -- 'admin' | 'member'
+  UNIQUE(project_id, user_id)
+);
+
+-- Tasks
+CREATE TABLE tasks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  description TEXT,
+  due_date TEXT,
+  priority TEXT DEFAULT 'medium',  -- 'low' | 'medium' | 'high'
+  status TEXT DEFAULT 'todo',      -- 'todo' | 'inprogress' | 'done'
+  project_id INTEGER,
+  assigned_to INTEGER,
+  created_by INTEGER,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
 
 ---
 
-## API Endpoints
+## 📡 API Reference
 
 ```
-POST   /api/auth/signup
-POST   /api/auth/login
-GET    /api/auth/me                        (JWT required)
+Auth
+  POST   /api/auth/signup               Register new user
+  POST   /api/auth/login                Login and receive JWT
+  GET    /api/auth/me                   Get current user info
 
-GET    /api/projects                       (JWT required)
-POST   /api/projects                       (JWT required)
-GET    /api/projects/:id                   (JWT required)
-POST   /api/projects/:id/members           (Admin only)
-DELETE /api/projects/:id/members/:userId   (Admin only)
+Projects
+  GET    /api/projects                  List user's projects
+  POST   /api/projects                  Create new project
+  GET    /api/projects/:id              Get project with members
+  POST   /api/projects/:id/members      Add member by email  [Admin]
+  DELETE /api/projects/:id/members/:uid Remove member        [Admin]
 
-GET    /api/tasks/project/:projectId       (JWT required)
-POST   /api/tasks                          (Admin only)
-PATCH  /api/tasks/:id/status              (Admin or assigned Member)
-PUT    /api/tasks/:id                      (Admin only)
-DELETE /api/tasks/:id                      (Admin only)
+Tasks
+  GET    /api/tasks/project/:projectId  List all tasks in project
+  POST   /api/tasks                     Create task           [Admin]
+  PUT    /api/tasks/:id                 Edit task             [Admin]
+  DELETE /api/tasks/:id                 Delete task           [Admin]
+  PATCH  /api/tasks/:id/status          Update task status    [Admin | Assigned Member]
 
-GET    /api/dashboard/:projectId           (JWT required)
+Dashboard
+  GET    /api/dashboard/:projectId      Get project stats & analytics
 ```
 
 ---
 
-## Role-Based Access
+## ⚙️ Local Development
 
-| Action | Admin | Member |
-|--------|-------|--------|
-| Create/Edit/Delete tasks | ✅ | ❌ |
-| Add/Remove members | ✅ | ❌ |
-| Update status of assigned tasks | ✅ | ✅ |
-| View project & tasks | ✅ | ✅ |
+### Prerequisites
+- Node.js v18+
+- npm
 
-> Roles are **project-scoped**. The same user can be Admin in one project and Member in another. Project creators automatically become Admin.
+### 1. Clone the repository
 
----
+```bash
+git clone https://github.com/siddhidokania/team-task-manager.git
+cd team-task-manager
+```
 
-## Local Development
-
-### Backend
+### 2. Run the Backend
 
 ```bash
 cd backend
@@ -123,19 +220,19 @@ npm install
 ```
 
 Create `backend/.env`:
-```
+```env
 PORT=5000
-JWT_SECRET=your_secret_key_here
+JWT_SECRET=your_super_secret_key_here
 NODE_ENV=development
 FRONTEND_URL=http://localhost:5173
 ```
 
 ```bash
 node src/index.js
-# Runs on http://localhost:5000
+# ✅ Server running on http://localhost:5000
 ```
 
-### Frontend
+### 3. Run the Frontend
 
 ```bash
 cd frontend
@@ -143,52 +240,68 @@ npm install
 ```
 
 Create `frontend/.env`:
-```
+```env
 VITE_API_URL=http://localhost:5000/api
 ```
 
 ```bash
 npm run dev
-# Runs on http://localhost:5173
+# ✅ App running on http://localhost:5173
 ```
 
 ---
 
-## Deployment (Render)
+## ☁️ Deployment
 
-### Backend — Web Service
+### Backend — Render Web Service
+
 | Setting | Value |
-|---------|-------|
+|:--------|:------|
 | Root Directory | `backend` |
 | Build Command | `npm install && npm rebuild sqlite3` |
 | Start Command | `node src/index.js` |
 
-Environment variables:
-```
+**Environment Variables:**
+```env
 PORT=5000
-JWT_SECRET=your_secret_key
+JWT_SECRET=your_production_secret
 NODE_ENV=production
-FRONTEND_URL=https://your-frontend-url.onrender.com
+FRONTEND_URL=https://your-frontend.onrender.com
 ```
 
-### Frontend — Static Site
+### Frontend — Render Static Site
+
 | Setting | Value |
-|---------|-------|
+|:--------|:------|
 | Root Directory | `frontend` |
 | Build Command | `npm install && npm run build` |
 | Publish Directory | `dist` |
 
-Environment variables:
-```
-VITE_API_URL=https://your-backend-url.onrender.com/api
+**Environment Variables:**
+```env
+VITE_API_URL=https://your-backend.onrender.com/api
 ```
 
-Add a Rewrite Rule in Render dashboard: `/* → /index.html`
+**Rewrite Rule:** `/* → /index.html` *(required for React Router)*
 
 ---
 
-## Known Limitations
+## ⚠️ Known Limitations
 
-- **Cold starts** — Free tier backend sleeps after 15 min of inactivity. First request may take 50–60 seconds.
-- **Ephemeral storage** — SQLite file resets on every redeploy. For persistent data, migrate to PostgreSQL.
-- **No role promotion UI** — Admins can add/remove members but cannot promote a Member to Admin through the UI.
+- **Cold Starts** — Free tier backend sleeps after 15 min of inactivity. First request may take up to 60 seconds to wake up.
+- **Ephemeral Storage** — SQLite resets on every Render redeploy. For production, migrate to PostgreSQL.
+- **No Role Promotion** — Admins can add/remove members but cannot promote a Member to Admin via the UI (backend supports it).
+
+---
+
+## 👤 Author
+
+Built as part of a full-stack web development assignment.
+
+---
+
+<div align="center">
+
+Made with 🌿 and a lot of commits.
+
+</div>
