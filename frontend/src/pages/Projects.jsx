@@ -24,7 +24,7 @@ export default function Projects() {
       setShowModal(false);
       setForm({ name: '', description: '' });
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to create project');
+      alert(err.response?.data?.message || 'Failed');
     } finally { setLoading(false); }
   };
 
@@ -34,46 +34,44 @@ export default function Projects() {
     <>
       <nav className="navbar">
         <div className="navbar-brand">
-          <div className="navbar-brand-icon">✦</div>
-          TaskFlow
+          <div className="navbar-brand-icon">❋</div>
+          Nexus
         </div>
         <div className="navbar-user">
-          <span style={{color:'var(--text2)', fontSize:'0.875rem'}}>Hello, {user?.name}</span>
+          <div className="navbar-avatar">{initials(user?.name)}</div>
+          <span className="navbar-name">{user?.name}</span>
           <button className="btn btn-ghost btn-sm" onClick={logout}>Sign out</button>
         </div>
       </nav>
 
-      <div className="container">
-        <div className="page-header">
-          <div className="page-header-left">
-            <h2>My Projects</h2>
-            <p>{projects.length} project{projects.length !== 1 ? 's' : ''} in your workspace</p>
+      <div className="projects-hero">
+        <div className="projects-hero-content">
+          <h2>Good to see you, {user?.name?.split(' ')[0]} 👋</h2>
+          <p>You have {projects.length} project{projects.length !== 1 ? 's' : ''} in your workspace</p>
+          <div className="projects-hero-actions">
+            <button className="btn-white" onClick={() => setShowModal(true)}>+ New Project</button>
           </div>
-          <button className="btn btn-primary" style={{width:'auto'}} onClick={() => setShowModal(true)}>
-            + New Project
-          </button>
         </div>
+      </div>
 
+      <div className="container">
         {projects.length === 0 ? (
-          <div className="empty-state">
+          <div className="empty-state" style={{marginTop:'2rem'}}>
             <div className="empty-state-icon">◈</div>
             <h3>No projects yet</h3>
-            <p>Create your first project to get started</p>
+            <p style={{marginBottom:'1.5rem'}}>Create your first project to get your team moving</p>
+            <button className="btn btn-primary" style={{width:'auto',margin:'0 auto'}} onClick={() => setShowModal(true)}>+ Create Project</button>
           </div>
         ) : (
           <div className="projects-grid">
             {projects.map(p => (
               <div key={p.id} className="project-card" onClick={() => navigate(`/projects/${p.id}`)}>
-                <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'0.75rem'}}>
-                  <div style={{width:'40px',height:'40px',background:'var(--accent)',borderRadius:'10px',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.1rem',fontFamily:'Syne',fontWeight:'800',color:'white'}}>
-                    {p.name[0].toUpperCase()}
-                  </div>
-                  <span className={`badge badge-${p.role}`}>{p.role}</span>
-                </div>
+                <div className="project-card-icon">{p.name[0].toUpperCase()}</div>
                 <h3>{p.name}</h3>
                 <p>{p.description || 'No description provided'}</p>
                 <div className="project-card-footer">
-                  <span style={{fontSize:'0.75rem',color:'var(--text3)'}}>Click to open →</span>
+                  <span className={`badge badge-${p.role}`}>{p.role}</span>
+                  <div className="project-card-arrow">→</div>
                 </div>
               </div>
             ))}
@@ -91,12 +89,12 @@ export default function Projects() {
             <form onSubmit={createProject}>
               <div className="form-group">
                 <label>Project Name</label>
-                <input type="text" placeholder="e.g. Website Redesign" value={form.name}
+                <input type="text" placeholder="e.g. Product Launch Q3" value={form.name}
                   onChange={e => setForm({...form, name: e.target.value})} required />
               </div>
               <div className="form-group">
                 <label>Description</label>
-                <input type="text" placeholder="What is this project about?" value={form.description}
+                <input type="text" placeholder="Brief description of this project" value={form.description}
                   onChange={e => setForm({...form, description: e.target.value})} />
               </div>
               <div className="modal-actions">

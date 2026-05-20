@@ -31,9 +31,7 @@ export default function ProjectDetail() {
       setTasks(Array.isArray(tRes.data) ? tRes.data : []);
       setDashboard(dRes.data || null);
       setIsAdmin(pRes.data.role === 'admin');
-    } catch {
-      navigate('/');
-    }
+    } catch { navigate('/'); }
   };
 
   const handleTaskSubmit = async (e) => {
@@ -44,18 +42,15 @@ export default function ProjectDetail() {
       } else {
         await api.post('/tasks', { ...taskForm, project_id: id });
       }
-      setShowTaskModal(false);
-      setEditTask(null);
+      setShowTaskModal(false); setEditTask(null);
       setTaskForm({ title: '', description: '', due_date: '', priority: 'medium', assigned_to: '' });
       loadAll();
-    } catch (err) { alert(err.response?.data?.message || 'Failed to save task'); }
+    } catch (err) { alert(err.response?.data?.message || 'Failed'); }
   };
 
   const updateStatus = async (taskId, status) => {
-    try {
-      await api.patch(`/tasks/${taskId}/status`, { status });
-      loadAll();
-    } catch (err) { alert(err.response?.data?.message); }
+    try { await api.patch(`/tasks/${taskId}/status`, { status }); loadAll(); }
+    catch (err) { alert(err.response?.data?.message); }
   };
 
   const deleteTask = async (taskId) => {
@@ -89,20 +84,29 @@ export default function ProjectDetail() {
 
   if (!project) return <div className="loading">Loading project</div>;
 
+  const statusConfig = [
+    { key: 'todo', label: 'To Do', color: '#a09880', dot: '#d4c9b0' },
+    { key: 'inprogress', label: 'In Progress', color: '#d68910', dot: '#f0c050' },
+    { key: 'done', label: 'Done', color: '#4a7c59', dot: '#6aab7a' }
+  ];
+
   return (
     <>
       <nav className="navbar">
         <div className="navbar-brand">
-          <div className="navbar-brand-icon">✦</div>
-          TaskFlow
+          <div className="navbar-brand-icon">❋</div>
+          Nexus
         </div>
-        <button className="btn btn-ghost btn-sm" onClick={() => navigate('/')}>← Back</button>
+        <button className="btn btn-ghost btn-sm" onClick={() => navigate('/')}>← Projects</button>
       </nav>
 
-      <div className="project-detail-header">
-        <div>
-          <h2>{project.name}</h2>
-          <p>{project.description || 'No description'}</p>
+      <div className="project-detail-hero">
+        <div className="project-detail-hero-left">
+          <div className="project-detail-icon">{project.name[0].toUpperCase()}</div>
+          <div>
+            <h2>{project.name}</h2>
+            <p>{project.description || 'No description'}</p>
+          </div>
         </div>
         <div className="header-actions">
           {isAdmin && (
@@ -114,25 +118,29 @@ export default function ProjectDetail() {
         </div>
       </div>
 
-      <div className="container">
+      <div className="tabs-wrapper">
         <div className="tabs">
-          {['tasks','dashboard','members'].map(t => (
-            <button key={t} className={`tab ${tab===t?'active':''}`} onClick={() => setTab(t)}>
-              {t.charAt(0).toUpperCase() + t.slice(1)}
-            </button>
+          {[['tasks','Tasks'],['dashboard','Dashboard'],['members','Members']].map(([key, label]) => (
+            <button key={key} className={`tab ${tab===key?'active':''}`} onClick={() => setTab(key)}>{label}</button>
           ))}
         </div>
+      </div>
+
+      <div className="container">
 
         {/* TASKS */}
         {tab === 'tasks' && (
           <div className="kanban">
-            {[['todo','To Do','#9090a8'],['inprogress','In Progress','#fbbf24'],['done','Done','#34d399']].map(([status, label, color]) => (
-              <div key={status} className="kanban-col">
+            {statusConfig.map(({ key, label, color, dot }) => (
+              <div key={key} className="kanban-col">
                 <div className="kanban-col-header">
-                  <h4 style={{color}}>{label}</h4>
-                  <span className="kanban-count">{tasksByStatus(status).length}</span>
+                  <div className="kanban-col-title">
+                    <div className="kanban-dot" style={{background: dot}}></div>
+                    <h4 style={{color}}>{label}</h4>
+                  </div>
+                  <span className="kanban-count">{tasksByStatus(key).length}</span>
                 </div>
-                {tasksByStatus(status).map(task => (
+                {tasksByStatus(key).map(task => (
                   <div key={task.id} className="task-card">
                     <h5>{task.title}</h5>
                     {task.description && <p>{task.description}</p>}
@@ -156,7 +164,7 @@ export default function ProjectDetail() {
                     </div>
                   </div>
                 ))}
-                {tasksByStatus(status).length === 0 && <div className="no-tasks">No tasks here</div>}
+                {tasksByStatus(key).length === 0 && <div className="no-tasks">No tasks here yet</div>}
               </div>
             ))}
           </div>
@@ -166,14 +174,11 @@ export default function ProjectDetail() {
         {tab === 'dashboard' && dashboard && (
           <div>
             <div className="stats-grid">
-              <div className="stat-card">
-                <h3>{dashboard.total}</h3>
-                <p>Total Tasks</p>
-              </div>
-              {[{status:'todo',label:'To Do'},{status:'inprogress',label:'In Progress'},{status:'done',label:'Done'}].map(({status,label}) => (
-                <div key={status} className="stat-card">
-                  <h3>{dashboard.byStatus.find(s=>s.status===status)?.count || 0}</h3>
-                  <p>{label}</p>
+              <div className="stat-card"><h3>{dashboard.total}</h3><p>Total</p></div>
+              {[{s:'todo',l:'To Do'},{s:'inprogress',l:'In Progress'},{s:'done',l:'Done'}].map(({s,l}) => (
+                <div key={s} className="stat-card">
+                  <h3>{dashboard.byStatus.find(x=>x.status===s)?.count || 0}</h3>
+                  <p>{l}</p>
                 </div>
               ))}
               <div className="stat-card">
@@ -184,16 +189,14 @@ export default function ProjectDetail() {
 
             {dashboard.byUser.length > 0 && (
               <div className="section-card">
-                <h4>Tasks per Member</h4>
+                <h4>Workload per Member</h4>
                 {dashboard.byUser.map(u => (
-                  <div key={u.name} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'0.6rem 0',borderBottom:'1px solid var(--border)'}}>
-                    <span style={{color:'var(--text)',fontSize:'0.875rem'}}>{u.name}</span>
-                    <div style={{display:'flex',alignItems:'center',gap:'0.75rem'}}>
-                      <div style={{width:'120px',height:'6px',background:'var(--bg3)',borderRadius:'3px',overflow:'hidden'}}>
-                        <div style={{width:`${Math.min(100,(u.count/dashboard.total)*100)}%`,height:'100%',background:'var(--accent)',borderRadius:'3px'}}></div>
-                      </div>
-                      <span style={{color:'var(--text2)',fontSize:'0.8rem',width:'20px',textAlign:'right'}}>{u.count}</span>
+                  <div key={u.name} className="progress-bar-wrap">
+                    <span className="progress-bar-name">{u.name}</span>
+                    <div className="progress-bar-track">
+                      <div className="progress-bar-fill" style={{width:`${Math.min(100,(u.count/Math.max(dashboard.total,1))*100)}%`}}></div>
                     </div>
+                    <span className="progress-bar-count">{u.count}</span>
                   </div>
                 ))}
               </div>
@@ -216,7 +219,7 @@ export default function ProjectDetail() {
         {/* MEMBERS */}
         {tab === 'members' && (
           <div className="section-card">
-            <h4>Team Members ({project.members?.length || 0})</h4>
+            <h4>Team Members · {project.members?.length || 0}</h4>
             <div className="members-list">
               {project.members?.map(m => (
                 <div key={m.id} className="member-item">
@@ -251,11 +254,11 @@ export default function ProjectDetail() {
             <form onSubmit={handleTaskSubmit}>
               <div className="form-group">
                 <label>Title</label>
-                <input type="text" placeholder="Task title" value={taskForm.title} onChange={e => setTaskForm({...taskForm, title: e.target.value})} required />
+                <input type="text" placeholder="What needs to be done?" value={taskForm.title} onChange={e => setTaskForm({...taskForm, title: e.target.value})} required />
               </div>
               <div className="form-group">
                 <label>Description</label>
-                <input type="text" placeholder="Optional description" value={taskForm.description} onChange={e => setTaskForm({...taskForm, description: e.target.value})} />
+                <input type="text" placeholder="Add some context..." value={taskForm.description} onChange={e => setTaskForm({...taskForm, description: e.target.value})} />
               </div>
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0.75rem'}}>
                 <div className="form-group">
@@ -280,7 +283,7 @@ export default function ProjectDetail() {
               </div>
               <div className="modal-actions">
                 <button type="button" className="btn btn-ghost" onClick={() => setShowTaskModal(false)}>Cancel</button>
-                <button type="submit" className="btn btn-primary" style={{width:'auto'}}>{editTask ? 'Update' : 'Create Task'}</button>
+                <button type="submit" className="btn btn-primary" style={{width:'auto'}}>{editTask ? 'Update Task' : 'Create Task'}</button>
               </div>
             </form>
           </div>
@@ -292,13 +295,13 @@ export default function ProjectDetail() {
         <div className="modal-overlay" onClick={() => setShowMemberModal(false)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Add Member</h3>
+              <h3>Add Team Member</h3>
               <button className="modal-close" onClick={() => setShowMemberModal(false)}>✕</button>
             </div>
             <form onSubmit={addMember}>
               <div className="form-group">
                 <label>Email Address</label>
-                <input type="email" placeholder="member@example.com" value={memberEmail} onChange={e => setMemberEmail(e.target.value)} required />
+                <input type="email" placeholder="teammate@company.com" value={memberEmail} onChange={e => setMemberEmail(e.target.value)} required />
               </div>
               <div className="modal-actions">
                 <button type="button" className="btn btn-ghost" onClick={() => setShowMemberModal(false)}>Cancel</button>
