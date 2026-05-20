@@ -3,8 +3,8 @@
 A full-stack collaborative task management web application built with React and Node.js.
 
 ## Live Demo
-- Frontend: https://task-manager-frontend-fni2.onrender.com
-- Backend: https://team-task-manager-42lf.onrender.com
+- Frontend: YOUR_FRONTEND_URL
+- Backend: YOUR_BACKEND_URL
 
 ## Tech Stack
 - **Frontend:** React, Vite, React Router, Axios
