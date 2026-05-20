@@ -296,12 +296,12 @@ VITE_API_URL=https://your-backend.onrender.com/api
 
 ## 👤 Author
 
-Built as part of a full-stack web development assignment.
+**Aniket Aryan**
 
 ---
 
 <div align="center">
 
-Made with 🌿 and a lot of commits.
+Made with hardwork and a lot of commits.
 
 </div>
