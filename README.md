@@ -6,7 +6,6 @@
 
 [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Frontend-4a7c59?style=for-the-badge)](https://team-task-frontend-3o3s.onrender.com)
 [![API](https://img.shields.io/badge/⚡_API-Backend-2c5f3f?style=for-the-badge)](https://team-task-manager-l9ru.onrender.com)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/siddhidokania/team-task-manager)
 
 <br/>
 
@@ -29,17 +28,9 @@
 
 ## ✨ What is Nexus?
 
-Nexus is a full-stack team collaboration tool where users can organize work into **projects**, break them down into **tasks**, and collaborate with their team — all while respecting **role-based permissions**.
+Nexus is a full-stack team collaboration tool I designed and built from scratch. Users can organize work into **projects**, break them down into **tasks**, and collaborate with their team — all while respecting **role-based permissions**.
 
 Think of it as a lightweight version of Asana or Trello — minus the bloat.
-
----
-
-## 🖥️ Screenshots
-
-| Projects Dashboard | Kanban Board | Team Dashboard |
-|:-:|:-:|:-:|
-| View all your projects with role badges | Drag tasks across To Do / In Progress / Done | Stats, workload, and overdue tracking |
 
 ---
 
@@ -205,14 +196,7 @@ Dashboard
 - Node.js v18+
 - npm
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/siddhidokania/team-task-manager.git
-cd team-task-manager
-```
-
-### 2. Run the Backend
+### 1. Run the Backend
 
 ```bash
 cd backend
@@ -232,7 +216,7 @@ node src/index.js
 # ✅ Server running on http://localhost:5000
 ```
 
-### 3. Run the Frontend
+### 2. Run the Frontend
 
 ```bash
 cd frontend
@@ -252,6 +236,8 @@ npm run dev
 ---
 
 ## ☁️ Deployment
+
+Deployed on **Render** — backend as a Web Service, frontend as a Static Site.
 
 ### Backend — Render Web Service
 
@@ -290,18 +276,12 @@ VITE_API_URL=https://your-backend.onrender.com/api
 
 - **Cold Starts** — Free tier backend sleeps after 15 min of inactivity. First request may take up to 60 seconds to wake up.
 - **Ephemeral Storage** — SQLite resets on every Render redeploy. For production, migrate to PostgreSQL.
-- **No Role Promotion** — Admins can add/remove members but cannot promote a Member to Admin via the UI (backend supports it).
-
----
-
-## 👤 Author
-
-**Aniket Aryan**
+- **No Role Promotion UI** — Admins can add/remove members but cannot promote a Member to Admin via the UI (backend supports it).
 
 ---
 
 <div align="center">
 
-Made with hardwork and a lot of commits.
+Made with 🌿 and a lot of commits.
 
 </div>
